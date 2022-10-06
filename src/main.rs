@@ -1,4 +1,6 @@
 // Node defines a generic type for nodes in our binary tree.
+// We need PartialEq to let our tree work on comparisons for i32 apparently.
+#[derive(PartialEq)]
 pub struct Node<T>{
     val: T, // what does &'a mean? It's called a "shared reference" and the 'a part means specifically "the lifetime of a"
     left: ChildNode<T>,
@@ -9,9 +11,9 @@ pub struct Node<T>{
 pub type ChildNode<T> = Option<Box<Node<T>>>;
 
 // BinaryTree defines our tree struct that will be a collection of Some Node types.
-pub struct BinaryTree<T> {
-    head: Option<Node<T>>,
-}
+// pub struct BinaryTree<T> {
+//     head: Option<Node<T>>,
+// }
 
 // Node of i32 type for our first implementation.
 impl<'a > Node<i32> {
@@ -43,5 +45,21 @@ impl<'a > Node<i32> {
 }
 
 fn main() {
-    println!("Hello, world!");
+    println!("Hello, beetree!");
+    let mut node = Node{val: 0, left: None, right: None};
+    node.insert(2);
+    node.insert(1);
+    assert!(node == Node {
+        val: 0,
+        left: None,
+        right: Some(Box::new(Node {
+            val: 2,
+            left: Some(Box::new(Node {
+                val: 1,
+                left: None,
+                right: None,
+            })),
+            right: None
+        }))
+    })
 }
